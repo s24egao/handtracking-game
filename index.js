@@ -111,9 +111,9 @@ const canvas = p => {
 	    }
 	  }
 
-		if(p.frameCount % 30 == 0) particles.push(new Bubble())
-		if(p.frameCount % 120 == 0) particles.push(new Bubble())
-		if((p.frameCount + 30) % 60 == 0) particles.push(new Bubble())
+		if(p.frameCount % 30 == 0) particles.push(new Key())
+		if(p.frameCount % 120 == 0) particles.push(new Key())
+		if((p.frameCount + 30) % 60 == 0) particles.push(new Key())
 		for(let o of particles) { o.update() }
 		particles = particles.filter(o => o.active)
 	}
@@ -179,7 +179,7 @@ const canvas = p => {
 	  	p.noStroke()
 	}
 
-	class Bubble {
+	class Key {
 		constructor() {
 			this.r = p.floor(p.random(0, 6)) * p.TWO_PI / 6
 			this.time = 90
@@ -196,7 +196,7 @@ const canvas = p => {
 			p.arc(0, 0, 810 - this.time * 9, 810 - this.time * 9, -0.2, 0.2)
 			p.pop()
 			for(let point of points) {
-				if(this.time < 20 && p.abs(this.r - point.r) < 0.6) {
+				if(this.time < 20 && p.min(p.abs(this.r - point.r), p.TWO_PI - p.abs(this.r - point.r)) < 0.6) {
 					combo++
 					if(combo > maxCombo) maxCombo = combo
 					updateCombo = 100
