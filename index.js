@@ -121,8 +121,8 @@ const canvas = p => {
 		p.background(0)
 	}
 
-	function mapX(x) { return p.map(x * 1280, 0, 1280, p.width, 0) }
-	function mapY(y) { return p.map(y * 1280, 0, 1280, 0, p.height) }
+	function mapX(x) { return p.map(x, 0.1, 0.9, p.width, 0) }
+	function mapY(y) { return p.map(y, 0.1, 0.9, 0, p.height) }
 	function drawHand(landmarks) {
 		p.strokeWeight(60)
 		p.noFill()
@@ -194,7 +194,7 @@ const canvas = p => {
 			p.arc(0, 0, 810 - this.time * 9, 810 - this.time * 9, -0.2, 0.2)
 			p.pop()
 			for(let point of points) {
-				if(this.time < 20 && p.min(p.abs(this.r - point.r), p.TWO_PI - p.abs(this.r - point.r)) < 0.6) {
+				if(this.time < 15 && p.min(p.abs(this.r - point.r), p.TWO_PI - p.abs(this.r - point.r)) < 0.6) {
 					combo++
 					if(combo > maxCombo) maxCombo = combo
 					updateCombo = 100

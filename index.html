@@ -8,10 +8,43 @@
 	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.1/p5.js" type="text/javascript"></script>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;900&display=swap" rel="stylesheet">
+	<style type="text/css">
+		.text {
+			position: fixed;
+			font-family: 'Noto Sans TC';
+			color: rgba(128, 128, 128, 0.6);
+			-webkit-user-select: none;
+			letter-spacing: 5px;
+		}
+
+		.text:hover {
+			color: rgba(128, 128, 128, 1);
+		}
+	</style>
 </head>
 <body style="margin: 0px; overflow: hidden;">
 	<video class="input" style="display: none;"></video>
 	<div id="canvas"></div>
 	<script src="index.js" type="text/javascript"></script>
+	<div class="text" style="left: 30px; top: 30%;">
+		<div style="font-size: 48px;">手部追蹤遊戲</div>
+		<div style="font-size: 24px;">Hand Tracking Game</div>
+		<div style="font-size: 18px;">v0.1</div>
+		<div style="font-size: 30px;">|</div>
+		<div style="font-size: 18px;">created at</div>
+		<div style="font-size: 24px;">2022-7-21</div>
+		<div style="font-size: 18px; margin-top: 30px;">Based on MediaPipe API.</div>
+		<div style="font-size: 24px;">-------------------</div>
+	</div>
+	<div class="text" style="right: 35px; top: 25%; width: 260px; text-align: left;">
+		<div style="font-size: 15px;">INFORMATION</div>
+		<div style="font-size: 18px; margin-top: 10px;">遊戲的流暢度可能會受到 GPU 效能影響。</div>
+		<div style="font-size: 18px; margin-top: 30px;">手部追蹤穩定度可能會受到視訊鏡頭與環境影響。</div>
+		<div style="font-size: 18px; margin-top: 30px;">手部追蹤系統在特定平台可能無法正常運行，敬請見諒。</div>
+		<div style="font-size: 18px; margin-top: 30px;">使用瀏覽器縮放功能（快速鍵 Ctrl+、Ctrl-）可調整遊戲畫面的大小。</div>
+	</div>
 </body>
 </html>
