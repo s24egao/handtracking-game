@@ -3,8 +3,8 @@
 const videoElement = document.getElementsByClassName('input')[0];
 let results
 
-const hands = new Hands({locateFile: (file) => {
-	return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
+const hands = new Hands({ locateFile: file => {
+	return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${ file }`
 }})
 hands.setOptions({
 	maxNumHands: 2,
@@ -16,7 +16,7 @@ hands.onResults(r => results = r)
 
 const camera = new Camera(videoElement, {
 	onFrame: async () => {
-		await hands.send({image: videoElement})
+		await hands.send({ image: videoElement })
 	},
 	width: 1280,
 	height: 720
@@ -58,7 +58,7 @@ const canvas = p => {
 	}
 
 	p.draw = () => {
-		p.background(0, 90)
+		p.background(0, 50)
 		p.noFill()
 		p.stroke(50)
 		p.strokeWeight(1)
