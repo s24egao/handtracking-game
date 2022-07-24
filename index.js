@@ -210,9 +210,9 @@ const canvas = p => {
 			}
 			this.time--
 			if(this.time <= 0) {
+				if(combo >= 1) noiseAmount = 30
 				combo = 0
 				particles.push(new Miss(p.cos(this.r) * 400, p.sin(this.r) * 400))
-				noiseAmount = 30
 				this.active = false
 			}
 		}
@@ -326,7 +326,7 @@ const canvas = p => {
 			this.y = (this.y + p.height) % p.height
 			p.push()
 			p.noStroke()
-			p.fill(50, 50)
+			p.fill(50, 30)
 			p.circle(this.x, this.y, this.s)
 			if(this.x > p.width - this.s / 2) p.circle(this.x - p.width, this.y, this.s)
 			if(this.y > p.height - this.s / 2) p.circle(this.x, this.y - p.height, this.s)
