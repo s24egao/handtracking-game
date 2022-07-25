@@ -45,7 +45,7 @@ const canvas = p => {
 
 	p.setup = () => {
 		p.createCanvas(p.windowWidth, p.windowHeight)
-			p.textAlign(p.CENTER, p.CENTER)
+		p.textAlign(p.CENTER, p.CENTER)
 		p.strokeWeight(60)
 		p.strokeJoin(p.ROUND)
 		p.fill(200)
