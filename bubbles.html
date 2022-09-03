@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Hand Tracking Game</title>
+	<meta name="description" content="A hand tracking game based on MediaPipe Hands">
+	<link rel="icon" type="image" href="icon.png">
+	<meta property="og:image" content="https://s24egao.github.io/handtracking-game/image.png">
+	<meta property="twitter:card" content="summary_large_image">
+	<meta property="twitter:image" content="https://s24egao.github.io/handtracking-game/image.png">
+	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.1/p5.js" type="text/javascript"></script>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100&display=swap" rel="stylesheet">
+</head>
+<body style="margin: 0px; overflow: hidden; background: black;">
+	<video class="input" style="display: none;"></video>
+	<div id="canvas"></div>
+	<canvas></canvas>
+	<script type="text/javascript">
+// A hand tracking game based on MediaPipe Hands
+
+const videoElement = document.getElementsByClassName('input')[0];
+let results
+
+const hands = new Hands({ locateFile: file => {
+	return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${ file }`
+}})
+hands.setOptions({
+	maxNumHands: 2,
+	modelComplexity: 0,
+	minDetectionConfidence: 0.5,
+	minTrackingConfidence: 0.5
+})
+hands.onResults(r => results = r)
+
+const camera = new Camera(videoElement, {
+	onFrame: async () => {
+		await hands.send({ image: videoElement })
+	},
+	width: 1280,
+	height: 720
+})
+camera.start()
+
+function center(landmarks) {
+	let x = 0, y = 0
+	for(let point of landmarks) {
+		x += point.x
+		y += point.y
+	}
+	x /= landmarks.length
+	y /= landmarks.length
+	return { x: x, y: y }
+}
+
+const canvas = p => {
+	let points = []
+	let particles = []
+
+	p.setup = () => {
+		p.createCanvas(p.windowWidth, p.windowHeight)
+		p.ellipseMode(p.CENTER)
+		p.noStroke()
+		p.pixelDensity(1)
+		for(let i = 0; i < 50; i++) particles.push(new Bubble())
+	}
+
+	p.draw = () => {
+		p.background(0)
+		points.length = 0
+		if(!results) return
+		if(results.multiHandLandmarks) for(const [i, landmarks] of results.multiHandLandmarks.entries()) points[i] = center(landmarks)
+		for(let o of particles) { o.update() }
+		particles = particles.filter(o => o.active)
+	}
+
+	p.windowResized = () => p.resizeCanvas(p.windowWidth, p.windowHeight)
+
+	function mapX(x) { return p.map(x, 0.1, 0.9, p.width, 0) }
+	function mapY(y) { return p.map(y, 0.1, 0.9, 0, p.height) }
+
+	class Bubble {
+		constructor() {
+			this.x = p.random(0, p.width)
+			this.y = p.random(0, p.height)
+			this.n = p.random(0, 100)
+			this.vx = 0
+			this.vy = 0
+			this.s = p.random(10, 350)
+			this.active = true
+			this.c = p.random(['#E56399', '#0D2648', '#035E7B', '#93C6D6', '#eeeeee'])
+		}
+
+		update() {
+			for(let point of points) {
+				if(p.dist(mapX(point.x), mapY(point.y), this.x, this.y) < 500) {
+					this.vx -= (this.x - mapX(point.x)) / 200
+					this.vy -= (this.y - mapY(point.y)) / 200
+				}
+			}
+			this.vx = this.vx * 0.95 + (p.noise(this.n, p.frameCount / 100) - 0.5) * 2.0
+			this.vy = this.vy * 0.95 + (p.noise(this.n + 100, p.frameCount / 100) - 0.5) * 2.0
+			this.x += this.vx
+			this.y += this.vy
+			this.x = (this.x + p.width) % p.width
+			this.y = (this.y + p.height) % p.height
+			p.fill(p.color(this.c), 50)
+			p.circle(this.x, this.y, this.s)
+			if(this.x > p.width - this.s / 2) p.circle(this.x - p.width, this.y, this.s)
+			if(this.y > p.height - this.s / 2) p.circle(this.x, this.y - p.height, this.s)
+			if(this.x < this.s / 2) p.circle(this.x + p.width, this.y, this.s)
+			if(this.y < this.s / 2) p.circle(this.x, this.y + p.height, this.s)
+		}
+	}
+}
+
+new p5(canvas, 'canvas')
+	</script>
+</body>
+</html>
