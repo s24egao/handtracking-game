@@ -70,6 +70,7 @@ const canvas = p => {
 	}
 
 	p.draw = () => {
+		if(p.mouseIsPressed) p.background('#EEEEEE')
 		points.length = 0
 		if(!results) return
 		if(results.multiHandLandmarks) for(const [i, landmarks] of results.multiHandLandmarks.entries()) points[i] = center(landmarks)
