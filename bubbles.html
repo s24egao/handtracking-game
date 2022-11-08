@@ -101,8 +101,8 @@ const canvas = p => {
 					this.vy -= (this.y - mapY(point.y)) / 200
 				}
 			}
-			this.vx = this.vx * 0.95 + (p.noise(this.n, p.frameCount / 100) - 0.5) * 2.0
-			this.vy = this.vy * 0.95 + (p.noise(this.n + 100, p.frameCount / 100) - 0.5) * 2.0
+			this.vx = this.vx * 0.9 + (p.noise(this.n, p.frameCount / 100) - 0.5) * 2.0
+			this.vy = this.vy * 0.9 + (p.noise(this.n + 100, p.frameCount / 100) - 0.5) * 2.0
 			this.x += this.vx
 			this.y += this.vy
 			this.x = (this.x + p.width) % p.width
